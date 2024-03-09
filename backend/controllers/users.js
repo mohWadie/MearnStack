@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
         const {email, password} = req.body;
         const emailExists = await usersModel.findOne({email: email});
 
-        if(emailExists != null && (await bcrypt.compare(password, emailExists.storedPassword))){
+        if(emailExists != null && password && (await bcrypt.compare(password, emailExists.storedPassword))){
             let currToken = generateToken(emailExists._id);
             let data = emailExists.toObject();
             data.token = currToken;
