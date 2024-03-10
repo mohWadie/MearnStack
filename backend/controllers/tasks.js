@@ -1,19 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const tasksModel = require('../models/Tasks');
+const {protect} = require('../middleware/authMiddleWare');
 
-router.post('/', async (req, res) => {
+router.post('/', protect, async (req, res) => {
     try{
         var {task, description, deadLine} = req.body;
         deadline = String(deadLine ?? null);
         let deadline2 = deadline?.split('/');
+        let dateDaeadLine = null;
         if(deadline)
-            deadline = new Date(Number(deadline2[2]), Number(deadline2[1]) - 1, Number(deadline2[0]) + 1);
+        dateDaeadLine = new Date(Number(deadline2[2]), Number(deadline2[1]) - 1, Number(deadline2[0]) + 1);
 
         var newTask = new tasksModel({
+            user: req.user.id,
             task: task,
             description: description,
-            deadLine: deadLine
+            deadLine: dateDaeadLine
         });
 
         await newTask.save();
@@ -25,10 +28,10 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/', async (req, res) => {
+router.get('/', protect, async (req, res) => {
     try{
-        var tasks = tasksModel.find({ user: req.user.id });
-        res.json(tasks);
+        var tasks = await tasksModel.find({ user: req.user.id });
+        res.status(200).json(tasks);
     }
     catch(err){
         console.log(err);
