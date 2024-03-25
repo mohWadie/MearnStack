@@ -29,7 +29,7 @@ function Login() {
       </section>
 
       <section className="form" onSubmit={onSubmit}>
-        <from>
+        <form>
           <div className="form-group">
             <input
               type="text"
@@ -55,7 +55,7 @@ function Login() {
           <div className="form-group">
             <input type="submit" className="btn btn-black" value="Login" />
           </div>
-        </from>
+        </form>
       </section>
     </>
   );

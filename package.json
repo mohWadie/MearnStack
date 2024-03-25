@@ -1,6 +1,7 @@
 {
   "name": "ecommerce",
   "version": "1.0.0",
+  "homepage": ".",
   "main": "server.js",
   "scripts": {
     "start": "nodemon backend/server.js",
